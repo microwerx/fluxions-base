@@ -33,6 +33,9 @@
     <ClCompile Include="src\fluxions_base_pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\fluxions_image_loader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\fluxions_base.hpp">
@@ -67,6 +70,9 @@
     </ClInclude>
     <ClInclude Include="src\fluxions_base_pch.hpp">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\fluxions_image_loader.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

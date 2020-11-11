@@ -11,10 +11,37 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\fluxions_base.hpp" />
+    <ClInclude Include="include\fluxions_colors.hpp" />
+    <ClInclude Include="include\fluxions_config.hpp" />
+    <ClInclude Include="include\fluxions_fileio_iostream.hpp" />
+    <ClInclude Include="include\fluxions_file_path_info.hpp" />
+    <ClInclude Include="include\fluxions_file_reader_writer.hpp" />
+    <ClInclude Include="include\fluxions_file_system.hpp" />
+    <ClInclude Include="include\fluxions_gl1gl2_tools.hpp" />
+    <ClInclude Include="include\fluxions_ibase_object.hpp" />
+    <ClInclude Include="include\fluxions_image_loader.hpp" />
+    <ClInclude Include="include\fluxions_opengl.hpp" />
+    <ClInclude Include="include\fluxions_simple_geometry_mesh.hpp" />
+    <ClInclude Include="include\fluxions_simple_renderer.hpp" />
+    <ClInclude Include="include\fluxions_simple_surface.hpp" />
+    <ClInclude Include="include\fluxions_simple_vertex.hpp" />
+    <ClInclude Include="include\fluxions_stdcxx.hpp" />
+    <ClInclude Include="include\fluxions_utilities.hpp" />
+    <ClInclude Include="include\fluxions_xml.hpp" />
+    <ClInclude Include="src\fluxions_base_pch.hpp" />
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="src\fluxions_base.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">fluxions_base_pch.hpp</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">fluxions_base_pch.hpp</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="src\fluxions_base_pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">fluxions_base_pch.hpp</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">fluxions_base_pch.hpp</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="src\fluxions_fileio_iostream.cpp">
@@ -35,13 +62,25 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">fluxions_base_pch.hpp</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="src\fluxions_base_pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    <ClCompile Include="src\fluxions_image_loader.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">fluxions_base_pch.hpp</PrecompiledHeaderFile>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">fluxions_base_pch.hpp</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="src\fluxions_image_loader.cpp">
+    <ClCompile Include="src\fluxions_opengl.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">fluxions_base_pch.hpp</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">fluxions_base_pch.hpp</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="src\fluxions_simple_geometry_mesh.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">fluxions_base_pch.hpp</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">fluxions_base_pch.hpp</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="src\fluxions_simple_renderer.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">fluxions_base_pch.hpp</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
@@ -53,20 +92,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">fluxions_base_pch.hpp</PrecompiledHeaderFile>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="include\fluxions_base.hpp" />
-    <ClInclude Include="include\fluxions_colors.hpp" />
-    <ClInclude Include="include\fluxions_fileio_iostream.hpp" />
-    <ClInclude Include="include\fluxions_file_path_info.hpp" />
-    <ClInclude Include="include\fluxions_file_reader_writer.hpp" />
-    <ClInclude Include="include\fluxions_file_system.hpp" />
-    <ClInclude Include="include\fluxions_gl1gl2_tools.hpp" />
-    <ClInclude Include="include\fluxions_ibase_object.hpp" />
-    <ClInclude Include="include\fluxions_image_loader.hpp" />
-    <ClInclude Include="include\fluxions_opengl.hpp" />
-    <ClInclude Include="include\fluxions_stdcxx.hpp" />
-    <ClInclude Include="src\fluxions_base_pch.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

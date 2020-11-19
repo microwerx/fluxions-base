@@ -12,6 +12,14 @@
 namespace Fluxions {
 	extern bool debugging;
 	extern const std::string BlankString;
+	
+	void ReadGLInfo();
+	const std::string& GetRenderer();
+	const std::string& GetVendor();
+	const std::string& GetVersion();
+
+	void Init();
+	void Kill();
 }
 
 #endif

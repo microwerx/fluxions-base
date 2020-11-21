@@ -243,7 +243,7 @@ namespace Fluxions {
 		HFLOGINFO("'%s' ... scale is %f", name.c_str(), scale);
 		for (auto it = vertexMap.begin(); it != vertexMap.end(); it++) {
 			if (size < 0)
-				it->second.position -= BoundingBox.Center();
+				it->second.position -= BoundingBox.center();
 
 #define MAKE_FINITE(x)  \
 	if (!isfinite((x))) \

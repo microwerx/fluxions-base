@@ -13,6 +13,8 @@ namespace Fluxions {
 	extern bool debugging;
 	extern const std::string BlankString;
 	
+	std::map<std::string, std::string> MakeOptionsFromArgs(int argc, const char** argv);
+
 	void ReadGLInfo();
 	const std::string& GetRenderer();
 	const std::string& GetVendor();
@@ -20,6 +22,7 @@ namespace Fluxions {
 
 	void Init();
 	void Kill();
+	void YieldThread();
 }
 
 #endif

@@ -44,6 +44,9 @@ namespace Fluxions {
 		case VertexType::SLOW_VERTEX:
 			surfaces[currentSurface].first = (int)slowVertices.size();
 			break;
+		case VertexType::UNDECIDED:
+		default:
+			break;
 		}
 		surfaces[currentSurface].firstIndex = (int)indices.size();
 		surfaces[currentSurface].firstZIndex = (int)zIndices.size();

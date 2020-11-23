@@ -238,7 +238,7 @@ namespace Fluxions {
 
 		float scale = 1;
 		if (size < 0)
-			scale = (float)(-2 * size / BoundingBox.MaxSize());
+			scale = (float)(-2 * size / BoundingBox.maxSize());
 
 		HFLOGINFO("'%s' ... scale is %f", name.c_str(), scale);
 		for (auto it = vertexMap.begin(); it != vertexMap.end(); it++) {
@@ -267,7 +267,7 @@ namespace Fluxions {
 
 			Vertices.push_back(it->second);
 		}
-		HFLOGINFO("'%s' ... max uniform scale is %f", name.c_str(), BoundingBox.MaxSize());
+		HFLOGINFO("'%s' ... max uniform scale is %f", name.c_str(), BoundingBox.maxSize());
 
 		computeTangentVectors();
 

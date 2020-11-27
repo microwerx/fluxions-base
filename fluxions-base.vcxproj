@@ -22,6 +22,7 @@
     <ClInclude Include="include\fluxions_ibase_object.hpp" />
     <ClInclude Include="include\fluxions_image_loader.hpp" />
     <ClInclude Include="include\fluxions_opengl.hpp" />
+    <ClInclude Include="include\fluxions_resource_manager.hpp" />
     <ClInclude Include="include\fluxions_simple_geometry_mesh.hpp" />
     <ClInclude Include="include\fluxions_simple_renderer.hpp" />
     <ClInclude Include="include\fluxions_simple_surface.hpp" />
@@ -141,6 +142,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -156,6 +158,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

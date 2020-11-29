@@ -1144,7 +1144,9 @@ namespace Fluxions {
 	//////////////////////////////////////////////////////////////////////
 
 	void EnableGLDebugFunc() {
-		if (GLEW_ARB_debug_output) {
+        GLint flags{0};
+        glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
+		if (flags & GL_CONTEXT_FLAG_DEBUG_BIT || GLEW_ARB_debug_output || GLEW_KHR_debug || GLEW_ARB_debug_output) {
 			glDebugMessageCallback((GLDEBUGPROC)Fluxions::FluxionsGLDebugFunc, NULL);
 			glEnable(GL_DEBUG_OUTPUT);
 		}

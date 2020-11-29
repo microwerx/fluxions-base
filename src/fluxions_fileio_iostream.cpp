@@ -455,9 +455,9 @@ namespace Fluxions {
 	}
 
 	std::ostream& WriteBinaryString(std::ostream& os, const std::string& str) {
-		int length = (int)str.size();
-		const char* cptr = str.c_str();
-		os.write(reinterpret_cast<char*>(&length), sizeof(long));
+        unsigned length = (unsigned)str.size();
+        WriteBinaryElement(os, length);
+        const char* cptr = str.c_str();
 		return os.write(cptr, length);
 	}
 
@@ -475,7 +475,12 @@ namespace Fluxions {
 		unsigned length;
 		ReadBinaryElement(is, length);
 		str.resize(length);
-		return is.read(reinterpret_cast<char*>(&str[0]), length);
+        is.read(reinterpret_cast<char*>(&str[0]), length);
+        if (!is) {
+            unsigned actual = (unsigned)is.gcount();
+            HFLOGERROR("Only %d characters read out of %d expected", actual, length);
+        }
+        return is;
 	}
 
 	std::istream& ReadBinaryStringMap(std::istream& is, string_string_map& m) {

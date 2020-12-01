@@ -106,6 +106,42 @@ namespace Fluxions {
 	using string_string_vector = std::vector<string_string>;
 	using string_string_map = std::map<std::string, std::string>;
 	using byte_array = std::vector<uint8_t>;
+
+	static inline size_t sizeInBytes(const std::string& obj) {
+		return obj.size();
+	}
+
+	static inline size_t sizeInBytes(const string_string& obj) {
+		return obj.first.size() + obj.second.size();
+	}
+
+	static inline size_t sizeInBytes(const string_vector& obj) {
+		size_t size = 0;
+		for (const auto& s : obj) {
+			size += s.size();
+		}
+		return size;
+	}
+
+	static inline size_t sizeInBytes(const string_string_vector& obj) {
+		size_t size = 0;
+		for (const auto& s : obj) {
+			size += sizeInBytes(s);
+		}
+		return size;
+	}
+
+	static inline size_t sizeInBytes(const string_string_map& obj) {
+		size_t size = 0;
+		for (auto& s : obj) {
+			size += sizeInBytes(s);
+		}
+		return size;
+	}
+
+	static inline size_t sizeInBytes(const byte_array& obj) {
+		return obj.size();
+	}
 }
 
 #endif

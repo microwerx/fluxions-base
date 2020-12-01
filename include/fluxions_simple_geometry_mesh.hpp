@@ -2,9 +2,10 @@
 #define FLUXIONS_SIMPLE_GEOMETRY_MESH_HPP
 
 #include <fluxions_base.hpp>
+#include <fluxions_simple_loadable_resource.hpp>
 
 namespace Fluxions {
-	class SimpleGeometryMesh {
+	class SimpleGeometryMesh : public SimpleLoadableResource {
 	public:
 		// These constants match the GL_POINTS, GL_LINES, ... constants
 		enum class SurfaceType {
@@ -30,6 +31,8 @@ namespace Fluxions {
 			Vector4ub boneIndex;
 			Vector4f boneWeights;
 			float sh[9];
+
+			static inline size_t sizeInBytes() { return sizeof(Vertex); }
 		};
 
 
@@ -41,11 +44,28 @@ namespace Fluxions {
 			std::string materialName;
 			std::string surfaceName;
 			int materialId = -1;
+
+			inline const char* name_cstr() const { return surfaceName.c_str(); }
+
+			inline size_t sizeInBytes() const {
+				return sizeof(Surface) +
+					materialLibrary.size() +
+					materialName.size() +
+					surfaceName.size();
+			}
 		};
 
 
 		SimpleGeometryMesh();
 		~SimpleGeometryMesh();
+
+		// Inherited methods from SimpleLoadableResource
+
+		bool load() override;
+		void unload() override;
+		void cacheToDisk() override;
+		void fetchCache() override;
+		size_t sizeInBytes() const override;
 
 
 		bool loadOBJ(const std::string& filename);
@@ -257,11 +277,7 @@ namespace Fluxions {
 
 		// Properties ////////////////////////////////////////////////
 
-		// The name of the geometry mesh
-		std::string name;
-		// The path where the geometry mesh is located
-		std::string path;
-		// The map of material libraries (first=identifier, last=original)
+		// The map of material libraries (first=identifier, last=path)
 		std::map<std::string, std::string> mtllibs;
 		// The map of materials (first=identifier, last=original)
 		std::map<std::string, std::string> Materials;

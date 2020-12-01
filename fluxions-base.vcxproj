@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\fluxions_base.hpp" />
+    <ClInclude Include="include\fluxions_base_objects.hpp" />
     <ClInclude Include="include\fluxions_colors.hpp" />
     <ClInclude Include="include\fluxions_config.hpp" />
     <ClInclude Include="include\fluxions_fileio_iostream.hpp" />
@@ -24,6 +25,10 @@
     <ClInclude Include="include\fluxions_opengl.hpp" />
     <ClInclude Include="include\fluxions_resource_manager.hpp" />
     <ClInclude Include="include\fluxions_simple_geometry_mesh.hpp" />
+    <ClInclude Include="include\fluxions_simple_loadable_resource.hpp" />
+    <ClInclude Include="include\fluxions_simple_map.hpp" />
+    <ClInclude Include="include\fluxions_simple_material.hpp" />
+    <ClInclude Include="include\fluxions_simple_material_library.hpp" />
     <ClInclude Include="include\fluxions_simple_renderer.hpp" />
     <ClInclude Include="include\fluxions_simple_surface.hpp" />
     <ClInclude Include="include\fluxions_simple_vertex.hpp" />
@@ -76,6 +81,12 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">fluxions_base_pch.hpp</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="src\fluxions_simple_geometry_mesh.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">fluxions_base_pch.hpp</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">fluxions_base_pch.hpp</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="src\fluxions_simple_material_library.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">fluxions_base_pch.hpp</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>

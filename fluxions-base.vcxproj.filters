@@ -15,10 +15,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\fluxions_base_pch.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\fluxions_xml.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\fluxions_base.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\fluxions_colors.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\fluxions_config.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\fluxions_file_path_info.hpp">
@@ -39,22 +48,28 @@
     <ClInclude Include="include\fluxions_ibase_object.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\fluxions_opengl.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\fluxions_stdcxx.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\fluxions_image_loader.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\fluxions_xml.hpp">
+    <ClInclude Include="include\fluxions_opengl.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\fluxions_config.hpp">
+    <ClInclude Include="include\fluxions_resource_manager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\fluxions_simple_geometry_mesh.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\fluxions_simple_loadable_resource.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\fluxions_simple_map.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\fluxions_simple_material.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\fluxions_simple_material_library.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\fluxions_simple_renderer.hpp">
@@ -66,13 +81,13 @@
     <ClInclude Include="include\fluxions_simple_vertex.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\fluxions_stdcxx.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\fluxions_utilities.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\fluxions_base_pch.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\fluxions_resource_manager.hpp">
+    <ClInclude Include="include\fluxions_base_objects.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -105,6 +120,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\fluxions_simple_geometry_mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fluxions_simple_material_library.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

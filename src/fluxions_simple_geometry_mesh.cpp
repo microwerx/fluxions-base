@@ -11,14 +11,44 @@ namespace Fluxions {
 	SimpleGeometryMesh::~SimpleGeometryMesh() {}
 
 
+	bool SimpleGeometryMesh::load() {
+		if (!loadOBJ(path()))
+			return false;
+		return SimpleLoadableResource::load();
+	}
+
+	void SimpleGeometryMesh::unload() {
+		SimpleLoadableResource::unload();
+	}
+
+	void SimpleGeometryMesh::cacheToDisk() {
+		SimpleLoadableResource::cacheToDisk();
+	}
+
+	void SimpleGeometryMesh::fetchCache() {
+		SimpleLoadableResource::fetchCache();
+	}
+
+	size_t SimpleGeometryMesh::sizeInBytes() const {
+		size_t surfaceSize{ 0 };
+		for (auto& s : Surfaces) {
+			surfaceSize += s.sizeInBytes();
+		}
+
+		return SimpleLoadableResource::sizeInBytes() +
+			(Vertex::sizeInBytes() * Vertices.size()) +
+			(sizeof(unsigned) * Indices.size()) +
+			surfaceSize;
+	}
+
 	bool SimpleGeometryMesh::loadOBJ(const std::string& filename) {
 		std::string cache_filename = filename + ".cache";
 		FilePathInfo fpi_original(filename);
 		FilePathInfo fpi_cache(cache_filename);
 
 		// Save name and path for possible reload later
-		name = fpi_original.stem();
-		path = fpi_original.shortestPath();
+		setName(fpi_original.stem());
+		setPath(fpi_original.shortestPath());
 
 		if (fpi_cache.exists()) {
 			// Is the original file newer than the cache?
@@ -27,13 +57,13 @@ namespace Fluxions {
 			}
 		}
 
-		HFLOGINFO("loading OBJ '%s'", name.c_str());
+		HFLOGINFO("loading OBJ '%s'", name_cstr());
 		int curSurface = 0;
 		std::string surfaceName;
 		std::string objectName;
 		std::string materialLibrary;
-		float v[3];
-		int iv[3];
+		float v[3]{};
+		int iv[3]{};
 		std::vector<Vector3f> vList;
 		std::vector<Vector3f> vnList;
 		std::vector<Vector2f> vtList;
@@ -70,7 +100,7 @@ namespace Fluxions {
 				if (Surfaces.size() != 0) {
 					Surfaces[curSurface].count = (int)faceList.size() * 3;
 
-					HFLOGINFO("'%s' ... adding %d new faces starting at %d to %s", name.c_str(), faceList.size(), first, Surfaces[curSurface].surfaceName.c_str());
+					HFLOGINFO("'%s' ... adding %d new faces starting at %d to %s", name_cstr(), faceList.size(), first, Surfaces[curSurface].name_cstr());
 
 					// 2. add indices (triangles)
 					for (auto it = faceList.begin(); it != faceList.end(); it++) {
@@ -90,13 +120,13 @@ namespace Fluxions {
 				linecount = 0;
 				istr >> objectName;
 				toloweridentifier(objectName);
-				HFLOGINFO("'%s' ... adding new object %s", name.c_str(), objectName.c_str());
+				HFLOGINFO("'%s' ... adding new object %s", name_cstr(), objectName.c_str());
 			}
 			else if (str == "g") {
 				linecount = 0;
 				istr >> surfaceName;
 				toloweridentifier(surfaceName);
-				HFLOGINFO("'%s' ... changing surface name to %s", name.c_str(), surfaceName.c_str());
+				HFLOGINFO("'%s' ... changing surface name to %s", name_cstr(), surfaceName.c_str());
 				Surfaces[curSurface].surfaceName = surfaceName;
 			}
 			else if (str == "usemtl") {
@@ -106,7 +136,7 @@ namespace Fluxions {
 				if (Surfaces.size() != 0 && !faceList.empty()) {
 					Surfaces[curSurface].count = (int)faceList.size() * 3;
 
-					HFLOGINFO("'%s' ... adding %d new faces starting at %d to %s", name.c_str(), faceList.size(), first, Surfaces[curSurface].surfaceName.c_str());
+					HFLOGINFO("'%s' ... adding %d new faces starting at %d to %s", name_cstr(), faceList.size(), first, Surfaces[curSurface].surfaceName.c_str());
 
 					// 2. add indices (triangles)
 					for (auto it = faceList.begin(); it != faceList.end(); it++) {
@@ -133,7 +163,7 @@ namespace Fluxions {
 				Surfaces[curSurface].materialLibrary = materialLibrary;
 				Surfaces[curSurface].materialName = str;
 				Materials[str] = materialLibrary;
-				HFLOGINFO("'%s' ... using material '%s' from '%s'", name.c_str(), str.c_str(), materialLibrary.c_str());
+				HFLOGINFO("'%s' ... using material '%s' from '%s'", name_cstr(), str.c_str(), materialLibrary.c_str());
 			}
 			else if (str == "mtllib") {
 				add_mtllib(istr, materialLibrary, fpi_original.parentPath());
@@ -243,7 +273,7 @@ namespace Fluxions {
 		if (size < 0)
 			scale = (float)(-2 * size / BoundingBox.maxSize());
 
-		HFLOGINFO("'%s' ... scale is %f", name.c_str(), scale);
+		HFLOGINFO("'%s' ... scale is %f", name_cstr(), scale);
 		for (auto it = vertexMap.begin(); it != vertexMap.end(); it++) {
 			if (size < 0)
 				it->second.position -= BoundingBox.center();
@@ -270,7 +300,7 @@ namespace Fluxions {
 
 			Vertices.push_back(it->second);
 		}
-		HFLOGINFO("'%s' ... max uniform scale is %f", name.c_str(), BoundingBox.maxSize());
+		HFLOGINFO("'%s' ... max uniform scale is %f", name_cstr(), BoundingBox.maxSize());
 
 		computeTangentVectors();
 
@@ -300,7 +330,7 @@ namespace Fluxions {
 		// update the information in the map list
 		mtllibname = fpi.stem();
 		mtllibs[mtllibname] = fpi.shortestPath();
-		HFLOGINFO("'%s' ... adding mtllib '%s' to load list", name.c_str(), mtllibname.c_str());
+		HFLOGINFO("'%s' ... adding mtllib '%s' to load list", name_cstr(), mtllibname.c_str());
 		return true;
 	}
 

@@ -12,11 +12,17 @@ namespace Fluxions {
 		// id() returns an identifier for this object (e.g. UUID or lowerCase)
 		const std::string& id() const { return id_; }
 
+		// id_cstr() returns a C style string for id()
+		const char* id_cstr() const { return id_.c_str(); }
+
 		// setId() sets an identifier for this object (e.g. UUID or lowerCase)
 		void setId(const std::string& identifier) { id_ = identifier; }
 
 		// name() returns the human readable name of the object
 		const std::string& name() const { return name_; }
+
+		// name_cstr() returns a C style string
+		const char* name_cstr() const { return name_.c_str(); }
 
 		// setName() sets the human readable name of the object
 		void setName(const std::string& nameOfObject) { name_ = nameOfObject; }
@@ -27,6 +33,19 @@ namespace Fluxions {
 		// setPath(path) sets the file path for this object for loading
 		void setPath(const std::string& pathToObject) { path_ = pathToObject; }
 
+		// reset() causes the object to be unloaded and reset.
+		void reset() {
+			unload();
+			name_.clear();
+			path_.clear();
+			id_.clear();
+		}
+
+		// sizeInBytes() returns the size of the object
+		virtual size_t sizeInBytes() const {
+			return sizeof(*this) + id_.size() + name_.size() + path_.size();
+		}
+
 		// loaded() returns true if the object was loaded
 		bool loaded() const { return loaded_; }
 
@@ -34,16 +53,19 @@ namespace Fluxions {
 		bool cached() const { return cached_; }
 
 		// load() causes the object to be loaded from disk
-		virtual bool load() = 0;
+		virtual bool load() { loaded_ = true; return true; }
 
 		// unload() causes the object to be unloaded from memory
-		virtual bool unload() = 0;
+		virtual void unload() {
+			loaded_ = false;
+			cached_ = false;
+		}
 
 		// cacheToDisk() causes the object to be temporarily saved to disk and unloaded from memory
-		virtual bool cacheToDisk() = 0;
+		virtual void cacheToDisk() { cached_ = true; }
 
 		// fetchCache() causes the object to be loaded from disk and loaded to memory
-		virtual bool fetchCache() = 0;
+		virtual void fetchCache() { cached_ = false; }
 
 		// status() creates a human readable string about the status of this object
 		inline std::string status() const {

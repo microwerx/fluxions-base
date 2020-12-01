@@ -3,10 +3,13 @@
 #include <fluxions_file_system.hpp>
 #include <fluxions_simple_geometry_mesh.hpp>
 
+
 namespace Fluxions {
 	SimpleGeometryMesh::SimpleGeometryMesh() {}
 
+
 	SimpleGeometryMesh::~SimpleGeometryMesh() {}
+
 
 	bool SimpleGeometryMesh::loadOBJ(const std::string& filename) {
 		std::string cache_filename = filename + ".cache";
@@ -274,6 +277,7 @@ namespace Fluxions {
 		return saveCache(cache_filename);
 	}
 
+
 	bool SimpleGeometryMesh::add_mtllib(std::istream& istr, std::string& mtllibname, const std::string& basepath) {
 		std::string pathToMTL = ReadString(istr);
 		FilePathInfo fpi(basepath + pathToMTL);
@@ -299,6 +303,7 @@ namespace Fluxions {
 		HFLOGINFO("'%s' ... adding mtllib '%s' to load list", name.c_str(), mtllibname.c_str());
 		return true;
 	}
+
 
 	bool SimpleGeometryMesh::saveOBJ(const std::string& filename) const {
 		HFLOGINFO("Writing OBJ %s", filename.c_str());
@@ -338,6 +343,7 @@ namespace Fluxions {
 		fout.close();
 		return true;
 	}
+
 
 	int SimpleGeometryMesh::saveOBJByMaterial(const std::string& filename,
 											  const std::string& mtllib,
@@ -383,6 +389,7 @@ namespace Fluxions {
 		return count;
 	}
 
+
 	int SimpleGeometryMesh::saveOBJByMaterial(const std::string& filename,
 											  const std::string& materialName,
 											  int materialId) const {
@@ -426,6 +433,7 @@ namespace Fluxions {
 		return count;
 	}
 
+
 	bool SimpleGeometryMesh::saveCache(const std::string& filename) const {
 		unsigned vertexCount = (unsigned)Vertices.size();
 		unsigned indexCount = (unsigned)Indices.size();
@@ -465,6 +473,7 @@ namespace Fluxions {
 		fout.close();
 		return true;
 	}
+
 
 	bool SimpleGeometryMesh::loadCache(const std::string& filename) {
 		HFLOGINFO("loading cached OBJ %s", filename.c_str());
@@ -531,131 +540,12 @@ namespace Fluxions {
 		return true;
 	}
 
-	//void SimpleGeometryMesh::SavePrecompiled(const std::string& filename, const std::string objname) const {
-	//	HFLOGINFO("Writing precompiled %s", filename.c_str());
-
-	//	std::string outFilename = filename + ".cpp";
-	//	std::ofstream fout(outFilename.c_str());
-
-	//	std::string prefix = "OBJ_" + objname + "_";
-
-	//	fout << "extern const int " << prefix << "IndicesSize;\n";
-	//	fout << "extern const int " << prefix << "VerticesSize;\n";
-	//	fout << "extern const int " << prefix << "SurfacesSize;\n";
-	//	fout << "extern const int " << prefix << "Indices[];\n";
-	//	fout << "extern const float " << prefix << "Vertices[];\n";
-	//	fout << "extern const OBJSurface " << prefix << "Surfaces[];\n";
-
-	//	fout << "#include <vector>\n";
-	//	fout << "#include \"fluxions_precompiled_models.hpp\"\n\n";
-	//	fout << "namespace Fluxions {\n";
-	//	fout << "using namespace std;\n\n";
-
-	//	fout << "const int " << prefix << "IndicesSize = " << Indices.size() << ";\n";
-	//	fout << "const int " << prefix << "VerticesSize = " << Vertices.size() << ";\n";
-	//	fout << "const int " << prefix << "SurfacesSize = " << Surfaces.size() << ";\n\n";
-
-	//	// size_t IndicesSize = Indices.size();
-	//	// size_t VerticesSize = Vertices.size();
-	//	// size_t SurfacesSize = Surfaces.size();
-
-	//	size_t totalCount = Indices.size();
-	//	size_t newLineCount = 0;
-	//	fout << "const int " << prefix << "Indices[] = {\n\t";
-	//	for (auto it = Indices.begin(); it != Indices.end(); it++) {
-	//		fout << *it;
-	//		if (--totalCount != 0)
-	//			fout << ", ";
-	//		if (newLineCount++ > 10) {
-	//			fout << "\n\t";
-	//			newLineCount = 0;
-	//		}
-	//	}
-	//	fout << "\n};\n\n";
-
-	//	newLineCount = 0;
-	//	totalCount = (int)Vertices.size();
-	//	fout << "const float " << prefix << "Vertices[] = {\n";
-	//	for (auto it = Vertices.begin(); it != Vertices.end(); it++) {
-	//		fout << "\t";
-	//		fout << std::fixed << std::setprecision(9) << it->position.x << "f, ";
-	//		fout << std::fixed << std::setprecision(9) << it->position.y << "f, ";
-	//		fout << std::fixed << std::setprecision(9) << it->position.z << "f, ";
-	//		fout << std::fixed << std::setprecision(9) << it->normal.x << "f, ";
-	//		fout << std::fixed << std::setprecision(9) << it->normal.y << "f, ";
-	//		fout << std::fixed << std::setprecision(9) << it->normal.z << "f, ";
-	//		fout << std::fixed << std::setprecision(9) << it->texcoord.x << "f, ";
-	//		fout << std::fixed << std::setprecision(9) << it->texcoord.y << "f, ";
-	//		fout << std::fixed << std::setprecision(9) << it->tangent.x << "f, ";
-	//		fout << std::fixed << std::setprecision(9) << it->tangent.y << "f, ";
-	//		fout << std::fixed << std::setprecision(9) << it->tangent.z << "f, ";
-	//		fout << std::fixed << std::setprecision(9) << it->binormal.x << "f, ";
-	//		fout << std::fixed << std::setprecision(9) << it->binormal.y << "f, ";
-	//		fout << std::fixed << std::setprecision(9) << it->binormal.z << "f";
-	//		totalCount--;
-	//		if (totalCount != 0)
-	//			fout << ",\n";
-	//		else
-	//			fout << "\n";
-	//	}
-	//	fout << "};\n\n";
-
-	//	totalCount = (int)Surfaces.size();
-	//	fout << "const OBJSurface " << prefix << "Surfaces[] = {\n";
-	//	for (auto it = Surfaces.begin(); it != Surfaces.end(); it++) {
-	//		fout << "\t{ ";
-	//		fout << "GL_TRIANGLES, ";
-	//		fout << it->first << ", ";
-	//		fout << it->count << ", ";
-	//		fout << "\"" << it->materialName << "\", ";
-	//		fout << "\"" << it->surfaceName << "\" ";
-	//		fout << "}";
-	//		if (--totalCount != 0)
-	//			fout << ",\n";
-	//		else
-	//			fout << "\n";
-	//	}
-	//	fout << "};\n\n} // namespace Fluxions\n\n";
-	//	fout.close();
-	//}
-
-	//void SimpleGeometryMesh::LoadPrecompiled(const int numIndices, const int* indices, const int numVertices, const float* vertices, const int numSurfaces, const OBJSurface* surfaces) {
-	//	clear();
-	//	resize(numVertices, numIndices, numSurfaces);
-	//	for (int i = 0; i < numIndices; i++) {
-	//		Indices[i] = indices[i];
-	//	}
-
-	//	for (int i = 0; i < numVertices; i++) {
-	//		Vertices[i].position.x = vertices[i * 14 + 0];
-	//		Vertices[i].position.y = vertices[i * 14 + 1];
-	//		Vertices[i].position.z = vertices[i * 14 + 2];
-	//		Vertices[i].normal.x = vertices[i * 14 + 3];
-	//		Vertices[i].normal.y = vertices[i * 14 + 4];
-	//		Vertices[i].normal.z = vertices[i * 14 + 5];
-	//		Vertices[i].texcoord.x = vertices[i * 14 + 6];
-	//		Vertices[i].texcoord.y = vertices[i * 14 + 7];
-	//		Vertices[i].binormal.x = vertices[i * 14 + 8];
-	//		Vertices[i].binormal.y = vertices[i * 14 + 9];
-	//		Vertices[i].binormal.z = vertices[i * 14 + 10];
-	//		Vertices[i].tangent.x = vertices[i * 14 + 11];
-	//		Vertices[i].tangent.y = vertices[i * 14 + 12];
-	//		Vertices[i].tangent.z = vertices[i * 14 + 13];
-	//	}
-
-	//	for (int i = 0; i < numSurfaces; i++) {
-	//		Surfaces[i].mode = surfaces[i].mode;
-	//		Surfaces[i].first = surfaces[i].first;
-	//		Surfaces[i].count = surfaces[i].count;
-	//		Surfaces[i].materialName = surfaces[i].materialName;
-	//		Surfaces[i].surfaceName = surfaces[i].surfaceName;
-	//	}
-	//}
 
 	void SimpleGeometryMesh::createSimpleModel(int vertexCount, int indexCount, int surfaceCount) {
 		clear();
 		resize(vertexCount, indexCount, surfaceCount);
 	}
+
 
 	void SimpleGeometryMesh::resize(int vertexCount, int indexCount, int surfaceCount) {
 		if (vertexCount > 0)
@@ -665,6 +555,7 @@ namespace Fluxions {
 		if (surfaceCount > 0)
 			Surfaces.resize(surfaceCount);
 	}
+
 
 	void SimpleGeometryMesh::computeTangentVectors() {
 		for (size_t i = 0; i < Vertices.size(); i++) {
@@ -704,6 +595,7 @@ namespace Fluxions {
 			}
 		}
 
+
 		for (size_t i = 0; i < Vertices.size(); i++) {
 			Vertices[i].normal.normalize();
 			Vertices[i].tangent.normalize();
@@ -742,62 +634,17 @@ namespace Fluxions {
 		}
 	}
 
+
 	void SimpleGeometryMesh::clear() {
 		Vertices.clear();
 		Indices.clear();
 		Surfaces.clear();
 	}
 
+
 	void SimpleGeometryMesh::transform(const Matrix4f& mat) {
 		for (auto& vertex : Vertices) {
 			vertex.position = mat * vertex.position;
 		}
 	}
-
-	//void SimpleGeometryMesh::Render(SimpleRenderer_GLuint* prenderer) {
-	//	if (!prenderer) return;
-	//	SimpleRenderer_GLuint& renderer = *prenderer;
-
-	//	int curIndex;
-
-	//	renderer.vertexCount += (int)Vertices.size();
-
-	//	renderer.Begin(GL_TRIANGLES, true);
-	//	curIndex = 0;
-	//	for (auto vIt = Vertices.begin(); vIt != Vertices.end(); vIt++, curIndex++) {
-	//		renderer.VertexAttrib4f(1, Vertices[curIndex].normal.x, Vertices[curIndex].normal.y, Vertices[curIndex].normal.z, 1.0f);
-	//		renderer.VertexAttrib4f(2, Vertices[curIndex].texcoord.x, Vertices[curIndex].texcoord.y, 0.0f, 1.0f);
-	//		renderer.VertexAttrib4f(6, Vertices[curIndex].tangent.x, Vertices[curIndex].tangent.y, Vertices[curIndex].tangent.z, 1.0f);
-	//		renderer.VertexAttrib4f(7, Vertices[curIndex].binormal.x, Vertices[curIndex].binormal.y, Vertices[curIndex].binormal.z, 1.0f);
-	//		renderer.VertexAttrib4f(0, Vertices[curIndex].position.x, Vertices[curIndex].position.y, Vertices[curIndex].position.z, 1.0f);
-	//	}
-	//	renderer.End();
-
-	//	std::vector<Surface>::iterator surfIt;
-	//	for (surfIt = Surfaces.begin(); surfIt != Surfaces.end(); surfIt++) {
-	//		renderer.triangleCount += surfIt->count / 3;
-	//		renderer.SetCurrentMtlName(surfIt->materialName);
-	//		renderer.Begin(GL_TRIANGLES, true);
-	//		for (unsigned i = surfIt->first; i < surfIt->first + surfIt->count; i++) {
-	//			renderer.Index(Indices[i]);
-	//		}
-	//		renderer.End();
-	//	}
-	//	renderer.SetCurrentMtlName("");
-	//}
-
-	//void SimpleGeometryMesh::RenderGL1() {
-	//	std::vector<Surface>::iterator surfIt;
-	//	for (surfIt = Surfaces.begin(); surfIt != Surfaces.end(); surfIt++) {
-	//		//renderer.SetCurrentMtlName(surfIt->materialName);
-	//		glBegin(GL_TRIANGLES);
-	//		for (unsigned i = surfIt->first; i < surfIt->first + surfIt->count; i++) {
-	//			int curIndex = Indices[i];
-	//			glTexCoord2f(Vertices[curIndex].texcoord.x, Vertices[curIndex].texcoord.y);
-	//			glNormal3f(Vertices[curIndex].normal.x, Vertices[curIndex].normal.y, Vertices[curIndex].normal.z);
-	//			glVertex3f(Vertices[curIndex].position.x, Vertices[curIndex].position.y, Vertices[curIndex].position.z);
-	//		}
-	//		glEnd();
-	//	}
-	//}
 } // namespace Fluxions

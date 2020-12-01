@@ -458,7 +458,7 @@ namespace Fluxions {
 		WriteBinaryElement(fout, Indices);
 
 		for (unsigned i = 0; i < surfaceCount; i++) {
-			unsigned mode = Surfaces[i].mode;
+			unsigned mode = (unsigned)Surfaces[i].mode;
 			unsigned first = Surfaces[i].first;
 			unsigned count = Surfaces[i].count;
 
@@ -519,7 +519,7 @@ namespace Fluxions {
 			ReadBinaryString(fin, mtllibName);
 			ReadBinaryString(fin, surfaceName);
 
-			Surfaces[i].mode = mode;
+			Surfaces[i].mode = (SimpleGeometryMesh::SurfaceType)mode;
 			Surfaces[i].first = first;
 			Surfaces[i].count = count;
 			Surfaces[i].materialName = mtlName;

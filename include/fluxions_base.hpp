@@ -23,6 +23,6 @@ namespace Fluxions {
 	void Init();
 	void Kill();
 	void YieldThread();
-}
+} // namespace Fluxions
 
 #endif

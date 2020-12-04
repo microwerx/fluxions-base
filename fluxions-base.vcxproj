@@ -27,6 +27,7 @@
     <ClInclude Include="include\fluxions_simple_geometry_mesh.hpp" />
     <ClInclude Include="include\fluxions_simple_loadable_resource.hpp" />
     <ClInclude Include="include\fluxions_simple_map.hpp" />
+    <ClInclude Include="include\fluxions_simple_map_library.hpp" />
     <ClInclude Include="include\fluxions_simple_material.hpp" />
     <ClInclude Include="include\fluxions_simple_material_library.hpp" />
     <ClInclude Include="include\fluxions_simple_renderer.hpp" />
@@ -81,6 +82,12 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">fluxions_base_pch.hpp</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="src\fluxions_simple_geometry_mesh.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">fluxions_base_pch.hpp</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">fluxions_base_pch.hpp</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="src\fluxions_simple_map_library.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">fluxions_base_pch.hpp</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>

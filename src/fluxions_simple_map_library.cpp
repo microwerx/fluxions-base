@@ -84,7 +84,7 @@ namespace Fluxions {
 
 	bool SimpleMapLibrary::addMap(const std::string& path) {
 		FilePathInfo fpi(path);
-		if (fpi.notFound()) return;
+		if (fpi.notFound()) return false;
 		std::string ext = fpi.extension();
 		tolower(ext);
 		const std::string name = fpi.shortestPath();

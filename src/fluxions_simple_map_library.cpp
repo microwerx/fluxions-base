@@ -1,6 +1,7 @@
 #include "fluxions_base_pch.hpp"
-#include <fluxions_simple_map_library.hpp>
 #include <fluxions_file_path_info.hpp>
+#include <fluxions_simple_map_library.hpp>
+
 
 namespace Fluxions {
 	SimpleMapLibrary::SimpleMapLibrary() {
@@ -84,26 +85,36 @@ namespace Fluxions {
 
 	bool SimpleMapLibrary::addMap(const std::string& path) {
 		FilePathInfo fpi(path);
-		if (fpi.notFound()) return false;
+		if (fpi.notFound()) {
+			HFLOGERROR("'%s' was not found", path.c_str());
+			return false;
+		}
 		std::string ext = fpi.extension();
 		tolower(ext);
 		const std::string name = fpi.shortestPath();
+		bool result{ false };
 		if (ext == ".exr") {
 			auto& image = c4fImages[name];
-			return LoadImage4f(name, image);
+			result = LoadImage4f(name, image);
 		}
 		else if (ext == ".pfm") {
 			auto& image = c3fImages[name];
-			return LoadImage3f(name, image);
+			result = LoadImage3f(name, image);
 		}
 		else if (ext == ".png") {
 			auto& image = c4ubImages[name];
-			return LoadImage4ub(name, image);
+			result = LoadImage4ub(name, image);
 		}
 		else if (ext == ".jpg" || ext == ".ppm") {
 			auto& image = c3ubImages[name];
-			return LoadImage3ub(name, image);
+			result = LoadImage3ub(name, image);
 		}
-		return false;
+		else {
+			HFLOGERROR("'%s' is not a supported map", path.c_str());
+		}
+		if (!result) {
+			HFLOGERROR("'%s' had an error loading", path.c_str());
+		}
+		return result;
 	}
 }

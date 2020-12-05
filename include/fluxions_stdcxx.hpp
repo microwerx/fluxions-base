@@ -103,6 +103,7 @@ namespace Fluxions {
 
 	using string_string = std::pair<std::string, std::string>;
 	using string_vector = std::vector<std::string>;
+	using string_list = std::list<std::string>;
 	using string_string_vector = std::vector<string_string>;
 	using string_string_map = std::map<std::string, std::string>;
 	using byte_array = std::vector<uint8_t>;

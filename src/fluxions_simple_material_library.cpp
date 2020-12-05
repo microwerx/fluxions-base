@@ -11,7 +11,7 @@ namespace Fluxions {
 		}
 		return Fluxions::sizeInBytes(maps) + Fluxions::sizeInBytes(mtllibs) + sizeOfMaterials;
 	}
-	
+
 	void SimpleMaterialLibrary::clear() {
 		maps.clear();
 		mtllibs.clear();
@@ -28,16 +28,22 @@ namespace Fluxions {
 
 	bool SimpleMaterialLibrary::loadMTL(const std::string& filename) {
 		FilePathInfo fpi(filename);
-		if (mtllibs.count(fpi.stem())) return true;
+		std::string name = fpi.filename();
+		if (mtllibs.count(name)) {
+			return true;
+		}
 
-		HFLOGINFO("Loading MTL '%s'", fpi.shortestPathC());
+		HFLOGINFO("'%s' ... loading '%s'", name.c_str(), fpi.shortestPathC());
 
-		std::string name = fpi.stem();
 		std::string pathToMTL = fpi.shortestPath();
 		mtllibs[name] = pathToMTL;
 
 		std::vector<std::string> lines;
 		ReadLines(pathToMTL, lines, false);
+
+		// This helps us find the path to the maps in the current directory
+		FilePathFinder pathFinder;
+		pathFinder.push(fpi.parentPath());
 
 		SimpleMaterial* curmtl = nullptr;
 		for (auto& line : lines) {
@@ -47,7 +53,7 @@ namespace Fluxions {
 			istr >> str;
 			if (str == "newmtl") {
 				curmtl = set_mtl(toloweridentifier(ReadString(istr)));
-				HFLOGINFO("newmtl '%s'", curmtl->name_cstr());
+				HFLOGINFO("'%s' ... newmtl '%s'", name.c_str(), curmtl->name_cstr());
 			}
 			else if (curmtl == nullptr) {
 			} // do nothing from now on because we're null
@@ -123,23 +129,30 @@ namespace Fluxions {
 			else if (str.substr(0, 4) == "map_") {
 				std::string mapName = str;
 				std::string pathToMap = ReadString(istr);
-				curmtl->addMap(mapName, pathToMap);
-				readMap(pathToMap, mapName, fpi.parentPath());
+				std::string shortestPathToMap = pathFinder.findShortestPath(pathToMap);
+				if (shortestPathToMap.empty()) {
+					HFLOGERROR("'%s' ... map '%s' not found", name.c_str(), shortestPathToMap.c_str());
+				}
+				else {
+					curmtl->addMap(mapName, shortestPathToMap);
+					std::string key = tolower(pathFinder.fpi().filename());
+					readMap(mapName, key, shortestPathToMap);
 
-				if (str == "map_Kd") {
-					curmtl->base.Kd.a = 1.0f;
-				}
-				else if (str == "map_Ks") {
-					curmtl->base.Ks.a = 1.0f;
-				}
-				else if (str == "map_Ke") {
-					curmtl->base.Ke.a = 1.0f;
-				}
-				else if (str == "map_Kdpbr") {
-					curmtl->base.Kdroughness.a = 1.0f;
-				}
-				else if (str == "map_Kspbr") {
-					curmtl->base.Ksroughness.a = 1.0f;
+					if (str == "map_Kd") {
+						curmtl->base.Kd.a = 1.0f;
+					}
+					else if (str == "map_Ks") {
+						curmtl->base.Ks.a = 1.0f;
+					}
+					else if (str == "map_Ke") {
+						curmtl->base.Ke.a = 1.0f;
+					}
+					else if (str == "map_Kdpbr") {
+						curmtl->base.Kdroughness.a = 1.0f;
+					}
+					else if (str == "map_Kspbr") {
+						curmtl->base.Ksroughness.a = 1.0f;
+					}
 				}
 			}
 			else if (!str.empty()) {
@@ -242,7 +255,7 @@ namespace Fluxions {
 		if (flags & WRITE_MAPS) {
 			XmlComment(mtlxml_fout, "Texture Maps", 1) << "\n\n";
 			for (auto& [mapName, imagePath] : maps) {
-				std::string map_name = "assets/" + mapName;
+				std::string map_name = "assets/" + imagePath;
 				toidentifier(map_name);
 				FilePathInfo mapfpi(imagePath);
 				std::string map_path = "assets/" + mapfpi.filename();
@@ -284,31 +297,20 @@ namespace Fluxions {
 		return &mtls.back();
 	}
 
-	bool SimpleMaterialLibrary::readMap(std::string& pathToMap, std::string& mapname, const std::string& basepath) {
-		FilePathInfo fpi(basepath + pathToMap);
-
+	bool SimpleMaterialLibrary::readMap(const std::string& mapname, std::string& key, const std::string& pathToMap) {
 		// Check if we have added this map already
-		if (maps.count(fpi.stem())) {
+		if (maps.count(key)) {
 			return true;
 		}
 
-		// If it doesn't exist, try the working directory
-		if (fpi.notFound()) {
-			fpi.reset("./" + pathToMap);
-		}
-
-		if (fpi.notFound()) {
-			HFLOGWARN("Map %s '%s' cannot be located", mapname.c_str(), pathToMap.c_str());
-			pathToMap = fpi.filename();
-			return false;
-		}
-		else {
-			pathToMap = fpi.shortestPath();
-		}
+		//if (fpi.notFound()) {
+		//	HFLOGWARN("Map %s '%s' cannot be located", mapname.c_str(), pathToMap.c_str());
+		//	pathToMap = fpi.filename();
+		//	return false;
+		//}
 
 		// update the information in the map list
-		mapname = tolower(fpi.filename());
-		maps[mapname] = pathToMap;
+		maps[key] = pathToMap;
 		return true;
 	}
 

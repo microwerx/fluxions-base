@@ -47,17 +47,18 @@ namespace Fluxions {
 		FilePathInfo fpi_cache(cache_filename);
 
 		// Save name and path for possible reload later
-		setName(fpi_original.stem());
+		setName(fpi_original.filename());
 		setPath(fpi_original.shortestPath());
 
 		if (fpi_cache.exists()) {
 			// Is the original file newer than the cache?
 			if (fpi_original.lastWriteTime() <= fpi_cache.lastWriteTime()) {
+				HFLOGINFO("'%s' ... reading cached OBJ '%s'", name_cstr(), cache_filename.c_str());
 				return loadCache(cache_filename);
 			}
 		}
 
-		HFLOGINFO("loading OBJ '%s'", name_cstr());
+		HFLOGINFO("'%s' ... loading", name_cstr());
 		int curSurface = 0;
 		std::string surfaceName;
 		std::string objectName;
@@ -100,7 +101,7 @@ namespace Fluxions {
 				if (Surfaces.size() != 0) {
 					Surfaces[curSurface].count = (int)faceList.size() * 3;
 
-					HFLOGINFO("'%s' ... adding %d new faces starting at %d to %s", name_cstr(), faceList.size(), first, Surfaces[curSurface].name_cstr());
+					HFLOGINFO("'%s' ... adding %d new faces starting at %d to '%s'", name_cstr(), faceList.size(), first, Surfaces[curSurface].name_cstr());
 
 					// 2. add indices (triangles)
 					for (auto it = faceList.begin(); it != faceList.end(); it++) {
@@ -166,7 +167,12 @@ namespace Fluxions {
 				HFLOGINFO("'%s' ... using material '%s' from '%s'", name_cstr(), str.c_str(), materialLibrary.c_str());
 			}
 			else if (str == "mtllib") {
-				add_mtllib(istr, materialLibrary, fpi_original.parentPath());
+				if (add_mtllib(istr, materialLibrary, fpi_original.parentPath())) {
+					HFLOGINFO("'%s' ... adding mtllib '%s' to load list", name_cstr(), materialLibrary.c_str());
+				}
+				else {
+					HFLOGWARN("'%s' ... mtllib '%s' was not found", name_cstr(), materialLibrary.c_str());
+				}
 			}
 			else if (str == "v") {
 				istr >> v[0] >> v[1] >> v[2];
@@ -304,6 +310,7 @@ namespace Fluxions {
 
 		computeTangentVectors();
 
+		HFLOGINFO("'%s' ... writing cached OBJ '%s'", name_cstr(), cache_filename.c_str());
 		return saveCache(cache_filename);
 	}
 
@@ -313,7 +320,7 @@ namespace Fluxions {
 		FilePathInfo fpi(basepath + pathToMTL);
 
 		// Check if we have added this map already
-		if (mtllibs.count(fpi.stem())) {
+		if (mtllibs.count(fpi.filename())) {
 			return true;
 		}
 
@@ -323,14 +330,12 @@ namespace Fluxions {
 		}
 
 		if (fpi.notFound()) {
-			HFLOGWARN("Material Library '%s' cannot be located", mtllibname.c_str());
 			return false;
 		}
 
 		// update the information in the map list
-		mtllibname = fpi.stem();
+		mtllibname = fpi.filename();
 		mtllibs[mtllibname] = fpi.shortestPath();
-		HFLOGINFO("'%s' ... adding mtllib '%s' to load list", name_cstr(), mtllibname.c_str());
 		return true;
 	}
 
@@ -475,8 +480,6 @@ namespace Fluxions {
 		}
 
 		// save a cache
-		HFLOGINFO("Writing cache %s", filename.c_str());
-
 		std::ofstream fout(filename, std::ios::binary);
 		WriteBinaryElement(fout, vertexCount);
 		WriteBinaryElement(fout, indexCount);
@@ -506,7 +509,6 @@ namespace Fluxions {
 
 
 	bool SimpleGeometryMesh::loadCache(const std::string& filename) {
-		HFLOGINFO("loading cached OBJ %s", filename.c_str());
 		std::ifstream fin(filename, std::ios::binary);
 		if (!fin)
 			return false;

@@ -278,9 +278,9 @@ namespace Fluxions {
 		// Properties ////////////////////////////////////////////////
 
 		// The map of material libraries (first=identifier, last=path)
-		std::map<std::string, std::string> mtllibs;
+		string_string_map mtllibs;
 		// The map of materials (first=identifier, last=original)
-		std::map<std::string, std::string> Materials;
+		string_string_map Materials;
 		// The array of vertexes
 		std::vector<Vertex> Vertices;
 		// The array of indexes

@@ -18,17 +18,24 @@ namespace Fluxions {
 
 	using FileTimeValue = std::filesystem::file_time_type;
 
+
+	//////////////////////////////////////////////////////////////////
+	// FilePathInfo //////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////
+
+
 	struct FilePathInfo {
 	public:
 		FilePathInfo();
 		FilePathInfo(const std::string& path);
-		FilePathInfo(const std::string& path, const string_vector& paths);
+		FilePathInfo(const std::string& path, const string_list& paths);
 
 		// returns true if path exists
 		bool reset(const std::string& path);
 
 		// returns true if path exists, searching through paths as necessary
-		bool reset(const std::string& path, const string_vector& paths);
+		// The paths are searched backwards
+		bool reset(const std::string& path, const string_list& paths);
 
 		const char* shortestPathC() const { return shortestPath().c_str(); }
 		const std::string& shortestPath() const { return relative_path_.empty() ? absolute_path_ : relative_path_; }
@@ -108,6 +115,94 @@ namespace Fluxions {
 
 		void _clear();
 		bool _fill_stat_info();
+	};
+
+
+	//////////////////////////////////////////////////////////////////
+	// FilePathFinder ////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////
+
+
+	class FilePathFinder {
+	public:
+		const FilePathInfo& fpi() const { return fpi_; }
+
+		bool pathExists(const std::string& path) const {
+			fpi_.reset(path, pathsToTry_);
+			if (fpi_.notFound()) {
+				return false;
+			}
+			return true;
+		}
+
+		std::string findShortestPath(const std::string& path) const {
+			std::string result;
+			fpi_.reset(path, pathsToTry_);
+			if (fpi_.notFound()) {
+				return {};
+			}
+			result = fpi_.shortestPath();
+			return result;
+		}
+
+		std::string findAbsolutePath(const std::string& path) const {
+			fpi_.reset(path, pathsToTry_);
+			if (fpi_.notFound()) {
+				return {};
+			}
+			return fpi_.absolutePath();
+		}
+
+		// returns true if path is added
+		bool push(const std::string& path) {
+			// 1. Does this path actually exist?
+			std::string shortestPath = findShortestPath(path);
+			if (shortestPath.empty()) {
+				return false;
+			}
+
+			if (!fpi_.isDirectory())
+				shortestPath = fpi_.parentPath();
+
+			pathsToTry_.push_front(shortestPath);
+			return true;
+
+			//// 2. Does path already exist in the list?
+			//auto it = std::find(pathsToTry_.begin(), pathsToTry_.end(), shortestPath);
+			//if (it == pathsToTry_.end()) {
+			//	pathsToTry_.push_front(shortestPath);
+			//	return true;
+			//}
+			//return false;
+		}
+
+		void pop() {
+			pathsToTry_.pop_front();
+		}
+
+		void clear() {
+			pathsToTry_.clear();
+		}
+
+		bool empty() const {
+			return pathsToTry_.empty();
+		}
+
+		size_t size() const {
+			return pathsToTry_.size();
+		}
+
+		string_list::const_iterator begin() const {
+			return pathsToTry_.begin();
+		}
+
+		string_list::const_iterator end() const {
+			return pathsToTry_.end();
+		}
+
+	private:
+		string_list pathsToTry_;
+		mutable FilePathInfo fpi_;
 	};
 } // namespace Fluxions
 

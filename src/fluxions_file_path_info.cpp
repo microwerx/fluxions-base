@@ -28,7 +28,7 @@ namespace Fluxions {
 		reset(path);
 	}
 
-	FilePathInfo::FilePathInfo(const std::string& path, const string_vector& paths) {
+	FilePathInfo::FilePathInfo(const std::string& path, const string_list& paths) {
 		reset(path, paths);
 	}
 
@@ -77,7 +77,7 @@ namespace Fluxions {
 		return _fill_stat_info();
 	}
 
-	bool FilePathInfo::reset(const std::string& path, const string_vector& paths) {
+	bool FilePathInfo::reset(const std::string& path, const string_list& paths) {
 		if (reset(path)) return true;
 		for (auto& dir : paths) {
 			if (reset(dir + path)) return true;
